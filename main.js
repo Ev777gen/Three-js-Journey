@@ -26,13 +26,73 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize( sizes.width, sizes.height );
 
-function animate() {
-	requestAnimationFrame( animate );
+// function animate() {
+// 	requestAnimationFrame( animate );
 
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
+// 	cube.rotation.x += 0.01;
+// 	cube.rotation.y += 0.01;
 
-	renderer.render( scene, camera );
-}
+// 	renderer.render( scene, camera );
+// }
 
-animate();
+// animate();
+
+// Вспомогательные оси
+const axesHelper = new THREE.AxesHelper();
+scene.add( axesHelper );
+
+
+// // position (относительные единицы)
+// cube.position.x = 1;
+// cube.position.y = 1;
+// cube.position.z = 1;
+
+// // задаем сразу все три координаты с помощью Vector3
+// cube.position.set(1, 1, 1);
+// // Расстояние от объекта до центра сцены
+// console.log(cube.position.length());
+// // Расстояние от объекта до другого объекта (например, камеры)
+// console.log(cube.position.distanceTo(camera.position));
+// // Меняет длину вектора на 1
+// cube.position.normalize();
+
+// // scale
+// cube.scale.x = 2;
+// cube.scale.y = 2;
+// cube.scale.z = 2;
+// cube.scale.set(2, 2, 2);
+
+// Повороты объекта
+// Для этого есть два метода: rotation и quaternion
+// При задании одного - второй тоже меняется.
+
+// rotation (в радианах)
+// cube.rotation.x = Math.PI / 4;
+// cube.rotation.y = Math.PI / 4;
+// cube.rotation.z = Math.PI / 4;
+// cube.rotation.set(Math.PI / 4, Math.PI / 4, Math.PI / 4, 'XYZ');
+// Rotation наследует от Euler, который создан для выполнения вращения. 
+// Последовательность осей имеет значение.
+// Если нужно поменять порядок осей (например, в видеоигре):
+// cube.rotation.reorder('YXZ');
+// cube.rotation.x = Math.PI / 4;
+// cube.rotation.y = Math.PI / 4;
+
+// Чтобы направить камеру на нужный нам объект
+// На центр сцены (она и так по-умолчанию туда направлена):
+// camera.lookAt(new THREE.Vector3(0, 0, 0));
+// На объект:
+// camera.lookAt(cube.position);
+
+// Группируем множество объектов:
+const group = new THREE.Group();
+scene.add(group);
+
+const cube2 = new THREE.Mesh(
+	new THREE.BoxGeometry(1, 1, 1),
+	new THREE.MeshBasicMaterial({ color: 0x0000ff })
+);
+cube2.position.x = -1.5;
+group.add(cube2);
+
+renderer.render( scene, camera );

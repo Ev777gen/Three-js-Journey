@@ -2,7 +2,7 @@ import './style.css';
 
 import * as THREE from 'three';
 import gsap from "gsap";
-// console.log(gsap);
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
 
@@ -103,6 +103,7 @@ scene.add( axesHelper );
 
 // renderer.render( scene, camera );
 
+
 //-----------------------------------------------------------------------------//
 //                                  Animation                                  //
 //-----------------------------------------------------------------------------//
@@ -134,15 +135,121 @@ scene.add( axesHelper );
 
 
 
-// С помощью библиотеки GSAP
-gsap.to(cube.position, { x: 2, duration: 1, delay: 1 });
+// // С помощью библиотеки GSAP
+// gsap.to(cube.position, { x: 2, duration: 1, delay: 1 });
 
-function animate() {
+// function animate() {
+// 	renderer.render( scene, camera );
+// 	requestAnimationFrame( animate );
+// }
+
+// animate();
+
+
+
+//-----------------------------------------------------------------------------//
+//                                   Camera                                    //
+//-----------------------------------------------------------------------------//
+
+// // Пример 1. 
+// // При перемещении курсора мыши от центра,
+// // куб смещается в противоположную сторону
+// const cursor = {
+//   x: 0,
+//   y: 0
+// };
+
+// window.addEventListener('mousemove', (event) => {
+//   cursor.x = event.clientX / sizes.width - 0.5;
+//   cursor.y = - (event.clientY / sizes.height - 0.5);
+// });
+
+// function tick() {
+//   const amplifier = 5;
+//   camera.position.x = cursor.x * amplifier;
+//   camera.position.y = cursor.y * amplifier;
+
+// 	renderer.render( scene, camera );
+
+// 	requestAnimationFrame( tick );
+// }
+
+// tick();
+
+
+// // Пример 2. 
+// // Куб следит за камерой
+// const cursor = {
+//   x: 0,
+//   y: 0
+// };
+
+// window.addEventListener('mousemove', (event) => {
+//   cursor.x = event.clientX / sizes.width - 0.5;
+//   cursor.y = - (event.clientY / sizes.height - 0.5);
+// });
+
+// function tick() {
+//   const amplifier = 5;
+//   camera.position.x = - cursor.x * amplifier;
+//   camera.position.y = - cursor.y * amplifier;
+//   // Чтобы куб оставался на месте и поворачивался к камере
+//   // (при этом надо сделать две координаты выше отрицательными)
+//   camera.lookAt(cube.position);
+
+// 	renderer.render( scene, camera );
+
+// 	requestAnimationFrame( tick );
+// }
+
+// tick();
+
+
+// // Пример 3. 
+// // Можно рассмотреть куб со всех сторон
+// const cursor = {
+//   x: 0,
+//   y: 0
+// };
+
+// window.addEventListener('mousemove', (event) => {
+//   cursor.x = event.clientX / sizes.width - 0.5;
+//   cursor.y = - (event.clientY / sizes.height - 0.5);
+// });
+
+// function tick() {
+//   const amplifier = 5;
+//   const distanceToCamera = 3;
+//   // Умножаем на 2пи, чтобы куб сделал полный оборот при перемещении
+//   // курсора мыши от левого края сцены до правого
+//   camera.position.x = Math.sin(cursor.x * Math.PI * 2) * distanceToCamera;
+//   camera.position.z = Math.cos(cursor.x * Math.PI * 2) * distanceToCamera;
+//   camera.position.y = cursor.y * amplifier;
+//   camera.lookAt(cube.position);
+
+// 	renderer.render( scene, camera );
+
+// 	requestAnimationFrame( tick );
+// }
+
+// tick();
+
+
+// Пример 4. 
+// Используем готовый control для камеры: OrbitControls
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+
+function tick() {
+  // При использовании дэмпинга, надо обновлять,
+  // чтобы движение прололжилось даже после того,
+  // как мы отпустили мышку
+  controls.update();
+
 	renderer.render( scene, camera );
-	requestAnimationFrame( animate );
+
+	requestAnimationFrame( tick );
 }
 
-animate();
-
-
-
+tick();
